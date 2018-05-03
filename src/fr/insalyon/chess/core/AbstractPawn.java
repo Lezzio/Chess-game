@@ -21,6 +21,6 @@ public abstract class AbstractPawn {
 	/**
 	 * Get the locations to which the pawn can move from the given location
 	 */
-	public abstract Location[] getMovement(Location location);
+	public abstract Location[] getMovement(AbstractPawn[][] board, Location location);
 
 }
