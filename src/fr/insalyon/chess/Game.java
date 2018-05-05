@@ -1,17 +1,16 @@
 package fr.insalyon.chess;
 
-import java.util.concurrent.Future;
-
 import fr.insalyon.chess.core.AbstractPawn;
-import fr.insalyon.chess.core.Location;
+import fr.insalyon.chess.gui.GameGUI;
+import javafx.application.Application;
 
 public class Game {
 	
-	private AbstractPawn[][] board = new AbstractPawn[8][8];
+	private AbstractPawn[][] board;
 	private int currentPlayer = 0;
 	
 	public Game() {
-		
+		board = new AbstractPawn[8][8];
 	}
 	
 	/**
@@ -26,6 +25,7 @@ public class Game {
 	}
 	
 	public void start() {
+		Application.launch(GameGUI.class);
 		//GUI Init
 		/*
 		while(!checkmate()) {
