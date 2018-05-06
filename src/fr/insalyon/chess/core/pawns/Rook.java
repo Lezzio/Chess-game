@@ -20,8 +20,16 @@ public class Rook extends AbstractPawn {
 	
 	@Override
 	public Location[] getMovement(AbstractPawn[][] board, Location location) {
-		Location loc = new Location(location.getRow() + 1, location.getCol());
-		Location[] locs = {loc};
+		Location location1 = null;
+		switch(this.team) {
+		case White: 
+			location1 = new Location(location.getRow() - 1, location.getCol());
+			break;
+		case Black:
+			location1 = new Location(location.getRow() + 1, location.getCol());
+			break;
+		}
+		Location[] locs = {location1};
 		return locs;
 	}
 

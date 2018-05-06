@@ -13,10 +13,18 @@ public class Location implements Serializable {
 	}
 	
 	public int getCol() {
-		return col;
+		if(col < 0) {
+			return 0;
+		} else {
+			return col;
+		}
 	}
 	public int getRow() {
-		return row;
+		if(row < 0) {
+			return 0;
+		} else {
+			return row;
+		}
 	}
 	
 	public void setCol(int col) {

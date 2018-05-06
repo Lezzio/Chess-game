@@ -1,5 +1,8 @@
 package fr.insalyon.chess.gui;
 
+import java.text.DateFormat;
+import java.util.Arrays;
+
 import fr.insalyon.chess.Game;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
@@ -74,25 +77,7 @@ public class GameApplication extends Application {
 						event.acceptTransferModes(TransferMode.MOVE);
 					}
 				});
-				rectangle.setOnDragDropped(new EventHandler<DragEvent>() {
-
-					@Override
-					public void handle(DragEvent event) {
-						event.acceptTransferModes(TransferMode.MOVE);
-						
-						Dragboard db = event.getDragboard();
-						Location from = (Location) db.getContent(locationFormat);
-						Location to = new Location(GridPane.getRowIndex((Node) event.getTarget()), GridPane.getColumnIndex((Node) event.getTarget()));
-						AbstractPawn selectedPawn = game.getPawnByLocation(from);
-						if(Location.locationArrayContains(selectedPawn.getMovement(game.getBoard(), selectedPawn.getLocation()), to)) {
-							game.movePawn(from, to);
-							event.setDropCompleted(true);
-						} else {
-							event.setDropCompleted(false);
-						}
-						refresh();
-					}
-				});
+				rectangle.setOnDragDropped(new TakePlaceHandler(this));
 				if(colorInt++ % 2 == 0) {
 					rectangle.setFill(Color.BEIGE);
 				} else {
@@ -103,18 +88,19 @@ public class GameApplication extends Application {
 		}
 		
 	}
+
 	public void drawPieces() {
 		AbstractPawn[][] board = game.getBoard();
 		for(int row = 0; row < 8; row++) {
 			for(int col = 0; col < 8; col++) {
 				AbstractPawn pawn = board[row][col];
 				if(pawn == null) continue; //Avoid NullPointerException
-				ImageView pieceImage = createPawnImage(pawn);
+				ImageView pieceImage = createPawnNode(pawn);
 				boardGrid.add(pieceImage, col, row);
 			}
 		}
 	}
-	private ImageView createPawnImage(AbstractPawn pawn) {
+	private ImageView createPawnNode(AbstractPawn pawn) {
 		//Retrieve the proper pawn image
 		Image image = new Image(pawn.getTeam().getName() + "_" + pawn.getName() + ".png");
 		ImageView pieceImage = new ImageView(image);
@@ -137,10 +123,28 @@ public class GameApplication extends Application {
 		        	circle.setDisable(true);
 		        	boardGrid.add(circle, locs[i].getCol(), locs[i].getRow());
 		        }
+		        System.out.println(Arrays.toString(locs));
 		    }
 		});
+		
+		//Piece need to support being replaced too
+		pieceImage.setOnDragOver(new EventHandler<DragEvent>() {
+
+			@Override
+			public void handle(DragEvent event) {
+				event.acceptTransferModes(TransferMode.MOVE);
+			}
+		});
+		pieceImage.setOnDragDropped(new TakePlaceHandler(this));
 		//Center the image view
 		pieceImage.setTranslateX(11);
 		return pieceImage;
+	}
+
+	public DataFormat getLocationFormat() {
+		return locationFormat;
+	}
+	public Game getGame() {
+		return game;
 	}
 }

@@ -21,7 +21,10 @@ public class Game {
 	 */
 	public void init() {
 		for(int i = 0; i < 8; i++) {
-			board[0][i] = new Rook(Team.White, new Location(0, i));
+			board[0][i] = new Rook(Team.Black, new Location(0, i));
+		}
+		for(int i = 0; i < 8; i++) {
+			board[7][i] = new Rook(Team.White, new Location(7, i));
 		}
 		/*
 		for(int i = 0; i < 8; i++) {
