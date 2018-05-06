@@ -2,6 +2,7 @@ package fr.insalyon.chess.core;
 
 import java.io.Serializable;
 
+//Serializable for the DataFormat transfer
 public class Location implements Serializable {
 
 	private int col;
@@ -33,6 +34,9 @@ public class Location implements Serializable {
 	public void setRow(int row) {
 		this.row = row;
 	}
+	public Location add(int row, int col) {
+		return new Location(this.row + row, this.col + col);
+	}
 	public boolean equals(Location location) {
 		return this.col == location.col && this.row == location.row;
 	}
@@ -49,5 +53,13 @@ public class Location implements Serializable {
 			}
 		}
 		return contained;
+	}
+	public static Location[] addLocation(Location[] locations, Location location) {
+		Location[] newLocations = new Location[locations.length + 1];
+		for(int i = 0; i < locations.length; i++) {
+			newLocations[i] = locations[i];
+		}
+		newLocations[locations.length] = location;
+		return newLocations;
 	}
 }

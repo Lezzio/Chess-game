@@ -70,13 +70,7 @@ public class GameApplication extends Application {
 				double xWidth = boardScene.getWidth() / 8.0;
 				double yHeight = boardScene.getHeight() / 8.0;
 				Rectangle rectangle = new Rectangle(xWidth, yHeight);
-				rectangle.setOnDragOver(new EventHandler<DragEvent>() {
-
-					@Override
-					public void handle(DragEvent event) {
-						event.acceptTransferModes(TransferMode.MOVE);
-					}
-				});
+				rectangle.setOnDragOver(new DragOverAccept());
 				rectangle.setOnDragDropped(new TakePlaceHandler(this));
 				if(colorInt++ % 2 == 0) {
 					rectangle.setFill(Color.BEIGE);
@@ -123,7 +117,9 @@ public class GameApplication extends Application {
 		        		circle.setFill(Color.GREEN);
 		        		circle.setTranslateX(26.0);
 		        		circle.setDisable(true);
-		        		boardGrid.add(circle, locs[i].getCol(), locs[i].getRow());
+		        		Location loc = locs[i];
+		        		if(loc == null) continue; //Avoid NullPointerException
+		        		boardGrid.add(circle, loc.getCol(), loc.getRow());
 		        	}
 		        	System.out.println(Arrays.toString(locs));
 		    	}
@@ -131,13 +127,7 @@ public class GameApplication extends Application {
 		});
 		
 		//Piece need to support being replaced too
-		pieceImage.setOnDragOver(new EventHandler<DragEvent>() {
-
-			@Override
-			public void handle(DragEvent event) {
-				event.acceptTransferModes(TransferMode.MOVE);
-			}
-		});
+		pieceImage.setOnDragOver(new DragOverAccept());
 		pieceImage.setOnDragDropped(new TakePlaceHandler(this));
 		//Center the image view
 		pieceImage.setTranslateX(11);

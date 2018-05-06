@@ -29,12 +29,13 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 		//Complete the movement only if accepted one
 		if(Location.locationArrayContains(selectedPawn.getMovement(gameApplication.getGame().getBoard(), selectedPawn.getLocation()), to)) {
 			gameApplication.getGame().movePawn(from, to);
+			gameApplication.getGame().rotatePlayer(); //Change player turn
 			event.setDropCompleted(true);
 		} else {
 			event.setDropCompleted(false);
 		}
 		gameApplication.refresh(); //Draw again
-		gameApplication.getGame().rotatePlayer(); //Change player turn
+		System.out.println("Called");
 	}
 
 }

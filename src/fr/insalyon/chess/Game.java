@@ -5,6 +5,7 @@ import java.util.Arrays;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.Team;
+import fr.insalyon.chess.core.pawns.LittlePawn;
 import fr.insalyon.chess.core.pawns.Rook;
 
 public class Game {
@@ -21,24 +22,20 @@ public class Game {
 	 */
 	public void init() {
 		for(int i = 0; i < 8; i++) {
-			board[0][i] = new Rook(Team.Black, new Location(0, i));
+			board[1][i] = new LittlePawn(Team.Black, new Location(1, i));
 		}
 		for(int i = 0; i < 8; i++) {
-			board[7][i] = new Rook(Team.White, new Location(7, i));
+			board[6][i] = new LittlePawn(Team.White, new Location(6, i));
 		}
-		/*
-		for(int i = 0; i < 8; i++) {
-			for(int j = 0; j < 8; j++) {
-				board[i][j] = new Rook(Team.White);
-			}
-		}
-		*/
 	}
 	public Team getCurrentPlayer() {
 		return Team.values()[currentPlayer];
 	}
 	public void rotatePlayer() {
 		currentPlayer = (currentPlayer + 1) % 2;
+	}
+	public static boolean isEmpty(AbstractPawn[][] board, Location location) {
+		return board[location.getRow()][location.getCol()] == null;
 	}
 	
 	public AbstractPawn[][] getBoard() {
