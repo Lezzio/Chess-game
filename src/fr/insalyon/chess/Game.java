@@ -6,6 +6,7 @@ import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.Team;
 import fr.insalyon.chess.core.pawns.LittlePawn;
+import fr.insalyon.chess.core.pawns.Queen;
 import fr.insalyon.chess.core.pawns.Rook;
 
 public class Game {
@@ -21,12 +22,17 @@ public class Game {
 	 * Initialize the board by default
 	 */
 	public void init() {
-		for(int i = 0; i < 8; i++) {
+		/*for(int i = 0; i < 8; i++) {
 			board[1][i] = new LittlePawn(Team.Black, new Location(1, i));
 		}
 		for(int i = 0; i < 8; i++) {
 			board[6][i] = new LittlePawn(Team.White, new Location(6, i));
-		}
+		}*/
+		board[7][0] = new Rook(Team.White, new Location(7, 0));
+		board[0][0] = new Rook(Team.Black, new Location(0, 0));
+
+		board[0][3] = new Queen(Team.Black, new Location(0, 3));
+		board[7][4] = new Queen(Team.White, new Location(7, 4));
 	}
 	public Team getCurrentPlayer() {
 		return Team.values()[currentPlayer];

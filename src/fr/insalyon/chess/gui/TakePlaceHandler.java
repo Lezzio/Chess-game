@@ -34,7 +34,6 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 			event.setDropCompleted(false);
 		}
 		gameApplication.refresh(); //Draw again
-		System.out.println("Called");
 	}
 
 }

@@ -37,9 +37,28 @@ public class MovementBuilder {
 				locations = Location.addLocation(locations, to);
 			}
 			break;
-		case LINE:
-			break;
-		case DIAGONAL:
+		case LINE_OR_DIAGONAL:
+			//To get directions : Delta row / abs delta row and Delta col / abs delta row
+			int rowInc = 0;
+			int colInc = 0;
+			if(to.getRow() - from.getRow() != 0) {
+				rowInc = (to.getRow() - from.getRow()) / Math.abs(to.getRow() - from.getRow());
+			}	
+			if(to.getCol() - from.getCol() != 0) {
+				colInc = (to.getCol() - from.getCol()) / Math.abs(to.getCol() - from.getCol());
+			}
+			int row = from.getRow();
+			int col = from.getCol();
+			boolean noCollision = true;
+			while(noCollision && ((rowInc > 0 ? row < to.getRow() : row > to.getRow()) || (colInc > 0 ? col < to.getCol() : col > to.getCol()))) {
+				row += rowInc;
+				col += colInc;
+				Location newLocation = new Location(row, col);
+				if(collide) {
+					noCollision = Game.isEmpty(board, newLocation);
+				}
+				locations = Location.addLocation(locations, newLocation);
+			}
 			break;
 		}
 	}

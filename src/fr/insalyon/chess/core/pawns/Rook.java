@@ -2,6 +2,8 @@ package fr.insalyon.chess.core.pawns;
 
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
+import fr.insalyon.chess.core.MovementBuilder;
+import fr.insalyon.chess.core.MovementType;
 import fr.insalyon.chess.core.Team;
 
 public class Rook extends AbstractPawn {
@@ -20,17 +22,15 @@ public class Rook extends AbstractPawn {
 	
 	@Override
 	public Location[] getMovement(AbstractPawn[][] board, Location location) {
-		Location location1 = null;
-		switch(this.team) {
-		case White: 
-			location1 = new Location(location.getRow() - 1, location.getCol());
-			break;
-		case Black:
-			location1 = new Location(location.getRow() + 1, location.getCol());
-			break;
-		}
-		Location[] locs = {location1};
-		return locs;
+		MovementBuilder movementBuilder = new MovementBuilder(board);
+		movementBuilder.setCollide(true);
+		movementBuilder.setTeam(this.team);
+		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(0, location.getCol())); //TOP
+		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(7, location.getCol())); //BOT
+		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(location.getRow(), 0)); //LEFT
+		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(location.getRow(), 7)); //RIGHT
+		
+		return movementBuilder.build();
 	}
 
 }
