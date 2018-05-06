@@ -31,9 +31,9 @@ public class MovementBuilder {
 		
 		switch(movementType) {
 		case SINGLE:
-			if(collide) {
+			if(Game.isEmpty(board, to)) {
 				locations = Location.addLocation(locations, to);
-			} else if(Game.isEmpty(board, to)) {
+			} else if(collide && board[to.getRow()][to.getCol()].getTeam() != this.team) {
 				locations = Location.addLocation(locations, to);
 			}
 			break;

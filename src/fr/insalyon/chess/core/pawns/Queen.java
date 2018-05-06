@@ -23,6 +23,8 @@ public class Queen extends AbstractPawn {
 	@Override
 	public Location[] getMovement(AbstractPawn[][] board, Location location) {
 		MovementBuilder movementBuilder = new MovementBuilder(board);
+		movementBuilder.setCollide(true);
+		movementBuilder.setTeam(this.team);
 		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(0, location.getCol())); //TOP
 		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(7, location.getCol())); //BOT
 		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(location.getRow(), 0)); //LEFT

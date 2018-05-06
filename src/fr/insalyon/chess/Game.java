@@ -49,10 +49,10 @@ public class Game {
 		board[7][5] = new Bishop(Team.White, new Location(7, 5));
 		//Queens
 		board[0][3] = new Queen(Team.Black, new Location(0, 3));
-		board[7][3] = new Queen(Team.White, new Location(7, 4));
+		board[7][3] = new Queen(Team.White, new Location(7, 3));
 		//Kings
 		board[0][4] = new King(Team.Black, new Location(0, 4));
-		board[7][4] = new King(Team.White, new Location(0, 4));
+		board[7][4] = new King(Team.White, new Location(7, 4));
 		
 	}
 	public Team getCurrentPlayer() {

@@ -1,7 +1,5 @@
 package fr.insalyon.chess.gui;
 
-import java.util.Arrays;
-
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import javafx.event.EventHandler;

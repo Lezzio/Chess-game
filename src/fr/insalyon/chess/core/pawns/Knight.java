@@ -23,6 +23,16 @@ public class Knight extends AbstractPawn {
 	@Override
 	public Location[] getMovement(AbstractPawn[][] board, Location location) {
 		MovementBuilder movementBuilder = new MovementBuilder(board);
+		movementBuilder.setCollide(true);
+		movementBuilder.setTeam(this.team);
+		movementBuilder.add(MovementType.SINGLE, location.add(2, 1));
+		movementBuilder.add(MovementType.SINGLE, location.add(2, -1));
+		movementBuilder.add(MovementType.SINGLE, location.add(-2, 1));
+		movementBuilder.add(MovementType.SINGLE, location.add(-2, -1));
+		movementBuilder.add(MovementType.SINGLE, location.add(1, 2));
+		movementBuilder.add(MovementType.SINGLE, location.add(-1, 2));
+		movementBuilder.add(MovementType.SINGLE, location.add(1, -2));
+		movementBuilder.add(MovementType.SINGLE, location.add(-1, -2));
 		
 		return movementBuilder.build();
 	}
