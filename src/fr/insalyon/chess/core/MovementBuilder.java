@@ -57,7 +57,11 @@ public class MovementBuilder {
 				if(collide) {
 					noCollision = Game.isEmpty(board, newLocation);
 				}
-				locations = Location.addLocation(locations, newLocation);
+				if(noCollision) {
+					locations = Location.addLocation(locations, newLocation);
+				} else if(board[newLocation.getRow()][newLocation.getCol()].getTeam() != this.team) {
+					locations = Location.addLocation(locations, newLocation);
+				}
 			}
 			break;
 		}

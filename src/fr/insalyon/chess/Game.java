@@ -5,6 +5,9 @@ import java.util.Arrays;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.Team;
+import fr.insalyon.chess.core.pawns.Bishop;
+import fr.insalyon.chess.core.pawns.King;
+import fr.insalyon.chess.core.pawns.Knight;
 import fr.insalyon.chess.core.pawns.LittlePawn;
 import fr.insalyon.chess.core.pawns.Queen;
 import fr.insalyon.chess.core.pawns.Rook;
@@ -22,17 +25,35 @@ public class Game {
 	 * Initialize the board by default
 	 */
 	public void init() {
-		/*for(int i = 0; i < 8; i++) {
+		//Little pawns
+		for(int i = 0; i < 8; i++) {
 			board[1][i] = new LittlePawn(Team.Black, new Location(1, i));
 		}
 		for(int i = 0; i < 8; i++) {
 			board[6][i] = new LittlePawn(Team.White, new Location(6, i));
-		}*/
-		board[7][0] = new Rook(Team.White, new Location(7, 0));
+		}
+		//Rooks
 		board[0][0] = new Rook(Team.Black, new Location(0, 0));
-
+		board[0][7] = new Rook(Team.Black, new Location(0, 7));
+		board[7][0] = new Rook(Team.White, new Location(7, 0));
+		board[7][7] = new Rook(Team.White, new Location(7, 7));
+		//Knights
+		board[0][1] = new Knight(Team.Black, new Location(0, 1));
+		board[0][6] = new Knight(Team.Black, new Location(0, 6));
+		board[7][1] = new Knight(Team.White, new Location(7, 1));
+		board[7][6] = new Knight(Team.White, new Location(7, 6));
+		//Bishops
+		board[0][2] = new Bishop(Team.Black, new Location(0, 2));
+		board[0][5] = new Bishop(Team.Black, new Location(0, 5));
+		board[7][2] = new Bishop(Team.White, new Location(7, 2));
+		board[7][5] = new Bishop(Team.White, new Location(7, 5));
+		//Queens
 		board[0][3] = new Queen(Team.Black, new Location(0, 3));
-		board[7][4] = new Queen(Team.White, new Location(7, 4));
+		board[7][3] = new Queen(Team.White, new Location(7, 4));
+		//Kings
+		board[0][4] = new King(Team.Black, new Location(0, 4));
+		board[7][4] = new King(Team.White, new Location(0, 4));
+		
 	}
 	public Team getCurrentPlayer() {
 		return Team.values()[currentPlayer];
