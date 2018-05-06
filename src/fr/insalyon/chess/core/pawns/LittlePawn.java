@@ -39,13 +39,13 @@ public class LittlePawn extends AbstractPawn {
 		}
 		
 		//Location one cell ahead
-		System.out.println(location.add(a, 0));
 		movementBuilder.add(MovementType.SINGLE, location.add(a, 0));
 		//Location two cells ahead if initial position
 		if(location.getRow() == 6 || location.getRow() == 1) {
 			movementBuilder.add(MovementType.SINGLE, location.add(2 * a, 0));
 		}
 		
+		//Diagonal movements if enemy pawn
 		Location wDiagonal1 = location.add(a, 1);
 		if(!Game.isEmpty(board, wDiagonal1) && board[wDiagonal1.getRow()][wDiagonal1.getCol()].getTeam() != this.team) {
 			movementBuilder.add(wDiagonal1);

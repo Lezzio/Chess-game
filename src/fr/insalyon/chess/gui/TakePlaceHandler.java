@@ -1,6 +1,5 @@
 package fr.insalyon.chess.gui;
 
-import fr.insalyon.chess.Game;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import javafx.event.EventHandler;
