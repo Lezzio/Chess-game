@@ -1,8 +1,11 @@
 package fr.insalyon.chess;
 
+import java.util.Arrays;
+
 import fr.insalyon.chess.core.AbstractPawn;
-import fr.insalyon.chess.gui.GameGUI;
-import javafx.application.Application;
+import fr.insalyon.chess.core.Location;
+import fr.insalyon.chess.core.Team;
+import fr.insalyon.chess.core.pawns.Rook;
 
 public class Game {
 	
@@ -18,30 +21,38 @@ public class Game {
 	 */
 	public void init() {
 		for(int i = 0; i < 8; i++) {
+			board[0][i] = new Rook(Team.White, new Location(0, i));
+		}
+		/*
+		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
-				
+				board[i][j] = new Rook(Team.White);
 			}
 		}
+		*/
 	}
 	
-	public void start() {
-		Application.launch(GameGUI.class);
-		//GUI Init
-		/*
-		while(!checkmate()) {
-		}
-		*/
-		
-		//Faire la logique dans l'événement
+	public AbstractPawn[][] getBoard() {
+		return board;
+	}
+	
+	public void movePawn(Location from, Location to) {
+		board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
+		board[from.getRow()][from.getCol()] = null;
+		board[to.getRow()][to.getCol()].setLocation(to);
+		display();
+	}
+	public void display() {
+		System.out.println(Arrays.deepToString(board));
 	}
 	
 	//The game is over
-	private boolean checkmate() {
+	public boolean checkmate() {
 		return false;
 	}
 	
 	//The king is in threat
-	private boolean check() {
+	public boolean check() {
 		return false;
 	}
 

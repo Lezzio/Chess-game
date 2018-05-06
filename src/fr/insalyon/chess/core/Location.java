@@ -1,26 +1,32 @@
 package fr.insalyon.chess.core;
 
-public class Location {
+import java.io.Serializable;
 
-	private int x;
-	private int y;
+public class Location implements Serializable {
+
+	private int col;
+	private int row;
 	
-	public Location(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public int getX() {
-		return x;
-	}
-	public int getY() {
-		return y;
+	public Location(int row, int col) {
+		this.row = row;
+		this.col = col;
 	}
 	
-	public void setX(int x) {
-		this.x = x;
+	public int getCol() {
+		return col;
 	}
-	public void setY(int y) {
-		this.y = y;
+	public int getRow() {
+		return row;
+	}
+	
+	public void setCol(int col) {
+		this.col = col;
+	}
+	public void setRow(int row) {
+		this.row = row;
+	}
+	@Override
+	public String toString() {
+		return "[Location] col:" + col + " row:" + row;
 	}
 }

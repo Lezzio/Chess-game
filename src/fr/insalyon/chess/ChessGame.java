@@ -1,9 +1,11 @@
 package fr.insalyon.chess;
 
+import fr.insalyon.chess.gui.GameApplication;
+import javafx.application.Application;
+
 public class ChessGame {
 	
 	public static void main(String ... args) {
-		Game game = new Game();
-		game.start();
+		Application.launch(GameApplication.class);
 	}
 }

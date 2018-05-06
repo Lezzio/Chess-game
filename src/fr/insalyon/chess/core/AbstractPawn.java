@@ -2,7 +2,9 @@ package fr.insalyon.chess.core;
 
 public abstract class AbstractPawn {
 
-	private Location location;
+	protected Team team;
+	protected Location location;
+	protected String name;
 	
 	/**
 	 * Get the current location of the pawn
@@ -17,7 +19,15 @@ public abstract class AbstractPawn {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	
+	/**
+	 * Get the name of the pawn
+	 */
+	public String getName() {
+		return name;
+	}
+	public Team getTeam() {
+		return team;
+	}
 	/**
 	 * Get the locations to which the pawn can move from the given location
 	 */
