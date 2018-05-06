@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -82,10 +83,13 @@ public class GameApplication extends Application {
 						Dragboard db = event.getDragboard();
 						Location from = (Location) db.getContent(locationFormat);
 						Location to = new Location(GridPane.getRowIndex((Node) event.getTarget()), GridPane.getColumnIndex((Node) event.getTarget()));
-						System.out.println("From" + from);
-						System.out.println("To" + to);
-						game.movePawn(from, to);
-						event.setDropCompleted(true);
+						AbstractPawn selectedPawn = game.getPawnByLocation(from);
+						if(Location.locationArrayContains(selectedPawn.getMovement(game.getBoard(), selectedPawn.getLocation()), to)) {
+							game.movePawn(from, to);
+							event.setDropCompleted(true);
+						} else {
+							event.setDropCompleted(false);
+						}
 						refresh();
 					}
 				});
@@ -123,6 +127,16 @@ public class GameApplication extends Application {
 		        ClipboardContent content = new ClipboardContent();
 		        content.put(locationFormat, pawn.getLocation());
 		        db.setContent(content);
+		        
+		        //Show reachable cells
+		        Location[] locs = pawn.getMovement(game.getBoard(), pawn.getLocation());
+		        for(int i = 0; i < locs.length; i++) {
+		        	Circle circle = new Circle(10);
+		        	circle.setFill(Color.GREEN);
+		        	circle.setTranslateX(26.0);
+		        	circle.setDisable(true);
+		        	boardGrid.add(circle, locs[i].getCol(), locs[i].getRow());
+		        }
 		    }
 		});
 		//Center the image view

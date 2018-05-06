@@ -25,8 +25,21 @@ public class Location implements Serializable {
 	public void setRow(int row) {
 		this.row = row;
 	}
+	public boolean equals(Location location) {
+		return this.col == location.col && this.row == location.row;
+	}
 	@Override
 	public String toString() {
 		return "[Location] col:" + col + " row:" + row;
+	}
+	public static boolean locationArrayContains(Location[] array, Location location) {
+		boolean contained = false;
+		int i = 0;
+		while(!contained && i < array.length) {
+			if(location.equals(array[i++])) {
+				contained = true;
+			}
+		}
+		return contained;
 	}
 }

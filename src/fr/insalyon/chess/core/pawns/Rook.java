@@ -6,19 +6,23 @@ import fr.insalyon.chess.core.Team;
 
 public class Rook extends AbstractPawn {
 
+	private final String NAME = "rook";
+	
 	public Rook(Team team) {
-		super.name = "rook";
+		super.name = NAME;
 		super.team = team;
 	}
 	public Rook(Team team, Location location) {
-		super.name = "rook";
+		super.name = NAME;
 		super.team = team;
 		super.location = location;
 	}
 	
 	@Override
 	public Location[] getMovement(AbstractPawn[][] board, Location location) {
-		return null;
+		Location loc = new Location(location.getRow() + 1, location.getCol());
+		Location[] locs = {loc};
+		return locs;
 	}
 
 }

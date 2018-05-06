@@ -35,12 +35,13 @@ public class Game {
 	public AbstractPawn[][] getBoard() {
 		return board;
 	}
-	
+	public AbstractPawn getPawnByLocation(Location location) {
+		return board[location.getRow()][location.getCol()];
+	}
 	public void movePawn(Location from, Location to) {
 		board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
 		board[from.getRow()][from.getCol()] = null;
 		board[to.getRow()][to.getCol()].setLocation(to);
-		display();
 	}
 	public void display() {
 		System.out.println(Arrays.deepToString(board));
