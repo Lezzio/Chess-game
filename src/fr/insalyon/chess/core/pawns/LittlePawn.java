@@ -47,11 +47,11 @@ public class LittlePawn extends AbstractPawn {
 		
 		//Diagonal movements if enemy pawn
 		Location wDiagonal1 = location.add(a, 1);
-		if(!Game.isEmpty(board, wDiagonal1) && board[wDiagonal1.getRow()][wDiagonal1.getCol()].getTeam() != this.team) {
+		if(wDiagonal1.isInside(board) && !Game.isEmpty(board, wDiagonal1) && board[wDiagonal1.getRow()][wDiagonal1.getCol()].getTeam() != this.team) {
 			movementBuilder.add(wDiagonal1);
 		}
 		Location wDiagonal2 = location.add(a, -1);
-		if(!Game.isEmpty(board, wDiagonal2) && board[wDiagonal2.getRow()][wDiagonal2.getCol()].getTeam() != this.team) {
+		if(wDiagonal2.isInside(board) && !Game.isEmpty(board, wDiagonal2) && board[wDiagonal2.getRow()][wDiagonal2.getCol()].getTeam() != this.team) {
 			movementBuilder.add(wDiagonal2);
 			
 		}

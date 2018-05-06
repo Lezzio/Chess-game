@@ -43,8 +43,7 @@ public class PawnDragEvent implements EventHandler<MouseEvent> {
 				circle.setTranslateX(26.0);
 				circle.setDisable(true);
 				Location loc = locs[i];
-				if (loc == null)
-					continue; // Avoid NullPointerException
+				if (loc == null) continue; // Avoid NullPointerException
 				gameApplication.getBoardGrid().add(circle, loc.getCol(), loc.getRow());
 			}
 			System.out.println(Arrays.toString(locs));

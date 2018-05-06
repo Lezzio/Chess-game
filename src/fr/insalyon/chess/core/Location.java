@@ -40,6 +40,9 @@ public class Location implements Serializable {
 	public boolean equals(Location location) {
 		return this.col == location.col && this.row == location.row;
 	}
+	public boolean isInside(Object[][] array) {
+		return row >= 0 && col >= 0 && row < array.length && col < array[0].length;
+	}
 	@Override
 	public String toString() {
 		return "[Location] col:" + col + " row:" + row;

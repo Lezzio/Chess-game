@@ -23,7 +23,12 @@ public class MovementBuilder {
 		add(movementType, null, to);
 	}
 	public void add(MovementType movementType, Location from, Location to) {
-		System.out.println("To location " + to);
+		
+		//If used locations are outside don't pursue
+		if((from != null && !from.isInside(board)) || !to.isInside(board)) {
+			return;
+		}
+		
 		switch(movementType) {
 		case SINGLE:
 			if(collide) {
