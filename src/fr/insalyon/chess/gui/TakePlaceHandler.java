@@ -26,13 +26,15 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 		Location from = (Location) db.getContent(gameApplication.getLocationFormat());
 		Location to = new Location(GridPane.getRowIndex((Node) event.getTarget()), GridPane.getColumnIndex((Node) event.getTarget()));
 		AbstractPawn selectedPawn = gameApplication.getGame().getPawnByLocation(from);
+		//Complete the movement only if accepted one
 		if(Location.locationArrayContains(selectedPawn.getMovement(gameApplication.getGame().getBoard(), selectedPawn.getLocation()), to)) {
 			gameApplication.getGame().movePawn(from, to);
 			event.setDropCompleted(true);
 		} else {
 			event.setDropCompleted(false);
 		}
-		gameApplication.refresh();
+		gameApplication.refresh(); //Draw again
+		gameApplication.getGame().rotatePlayer(); //Change player turn
 	}
 
 }

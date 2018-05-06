@@ -108,22 +108,25 @@ public class GameApplication extends Application {
 		//Define drag and drop event
 		pieceImage.setOnDragDetected(new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent event) {
-		        Dragboard db = pieceImage.startDragAndDrop(TransferMode.MOVE);
-		        db.setDragView(image);
-		        ClipboardContent content = new ClipboardContent();
-		        content.put(locationFormat, pawn.getLocation());
-		        db.setContent(content);
+		    	//Check player turn
+		    	if(pawn.getTeam() == game.getCurrentPlayer()) {
+		    		Dragboard db = pieceImage.startDragAndDrop(TransferMode.MOVE);
+		    		db.setDragView(image);
+		    		ClipboardContent content = new ClipboardContent();
+		    		content.put(locationFormat, pawn.getLocation());
+		        	db.setContent(content);
 		        
-		        //Show reachable cells
-		        Location[] locs = pawn.getMovement(game.getBoard(), pawn.getLocation());
-		        for(int i = 0; i < locs.length; i++) {
-		        	Circle circle = new Circle(10);
-		        	circle.setFill(Color.GREEN);
-		        	circle.setTranslateX(26.0);
-		        	circle.setDisable(true);
-		        	boardGrid.add(circle, locs[i].getCol(), locs[i].getRow());
-		        }
-		        System.out.println(Arrays.toString(locs));
+		        	//Show reachable cells
+		        	Location[] locs = pawn.getMovement(game.getBoard(), pawn.getLocation());
+		        	for(int i = 0; i < locs.length; i++) {
+		        		Circle circle = new Circle(10);
+		        		circle.setFill(Color.GREEN);
+		        		circle.setTranslateX(26.0);
+		        		circle.setDisable(true);
+		        		boardGrid.add(circle, locs[i].getCol(), locs[i].getRow());
+		        	}
+		        	System.out.println(Arrays.toString(locs));
+		    	}
 		    }
 		});
 		

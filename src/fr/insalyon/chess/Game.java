@@ -34,6 +34,12 @@ public class Game {
 		}
 		*/
 	}
+	public Team getCurrentPlayer() {
+		return Team.values()[currentPlayer];
+	}
+	public void rotatePlayer() {
+		currentPlayer = (currentPlayer + 1) % 2;
+	}
 	
 	public AbstractPawn[][] getBoard() {
 		return board;
