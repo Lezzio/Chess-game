@@ -34,7 +34,7 @@ public class PawnDragEvent implements EventHandler<MouseEvent> {
 			db.setContent(content);
 
 			// Show reachable cells
-			Location[] locs = pawn.getMovement(gameApplication.getGame().getBoard(), pawn.getLocation());
+			Location[] locs = pawn.getMovement(gameApplication.getGame(), pawn.getLocation(), true);
 			for (int i = 0; i < locs.length; i++) {
 				Circle circle = new Circle(10);
 				circle.setFill(Color.GREEN);

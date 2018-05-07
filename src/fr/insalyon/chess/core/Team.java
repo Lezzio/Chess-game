@@ -2,7 +2,7 @@ package fr.insalyon.chess.core;
 
 public enum Team {
 	
-	White("white"), Black("black");
+	WHITE("white"), BLACK("black");
 	
 	private String name;
 	

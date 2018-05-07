@@ -1,5 +1,7 @@
 package fr.insalyon.chess.core;
 
+import fr.insalyon.chess.Game;
+
 public abstract class AbstractPawn {
 
 	protected Team team;
@@ -31,6 +33,6 @@ public abstract class AbstractPawn {
 	/**
 	 * Get the locations to which the pawn can move from the given location
 	 */
-	public abstract Location[] getMovement(AbstractPawn[][] board, Location location);
+	public abstract Location[] getMovement(Game game, Location location, boolean check);
 
 }

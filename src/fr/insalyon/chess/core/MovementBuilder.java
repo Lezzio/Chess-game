@@ -3,24 +3,25 @@ package fr.insalyon.chess.core;
 import fr.insalyon.chess.Game;
 
 public class MovementBuilder {
-	
+
+	private Game game;
 	private Team team;
 	private Location[] locations;
 	private AbstractPawn[][] board;
 	private boolean collide;
+	private boolean check;
 
-	public MovementBuilder(AbstractPawn[][] board) {
-		this.board = board;
+	public MovementBuilder(Game game, boolean check) {
+		this.game = game;
+		this.board = game.getBoard();
 		this.locations = new Location[0];
+		this.check = check;
 	}
 	public void setTeam(Team team) {
 		this.team = team;
 	}
 	public void setCollide(boolean collide) {
 		this.collide = collide;
-	}
-	public void add(MovementType movementType, Location to) {
-		add(movementType, null, to);
 	}
 	public void add(MovementType movementType, Location from, Location to) {
 		
@@ -32,9 +33,9 @@ public class MovementBuilder {
 		switch(movementType) {
 		case SINGLE:
 			if(Game.isEmpty(board, to)) {
-				locations = Location.addLocation(locations, to);
-			} else if(collide && board[to.getRow()][to.getCol()].getTeam() != this.team) {
-				locations = Location.addLocation(locations, to);
+				if(allowedMovement(from, to)) locations = Location.addLocation(locations, to);
+			} else if(collide && game.getPawnByLocation(to).getTeam() != this.team) {
+				if(allowedMovement(from, to)) locations = Location.addLocation(locations, to);
 			}
 			break;
 		case LINE_OR_DIAGONAL:
@@ -58,16 +59,33 @@ public class MovementBuilder {
 					noCollision = Game.isEmpty(board, newLocation);
 				}
 				if(noCollision) {
-					locations = Location.addLocation(locations, newLocation);
-				} else if(board[newLocation.getRow()][newLocation.getCol()].getTeam() != this.team) {
-					locations = Location.addLocation(locations, newLocation);
+					if(allowedMovement(from, newLocation)) locations = Location.addLocation(locations, newLocation);
+				} else if(game.getPawnByLocation(newLocation).getTeam() != this.team) {
+					if(allowedMovement(from, newLocation)) locations = Location.addLocation(locations, newLocation);
 				}
 			}
 			break;
 		}
 	}
-	public void add(Location location) {
-		locations = Location.addLocation(locations, location);
+	private boolean allowedMovement(Location from, Location to) {
+		if(check) {
+		AbstractPawn movedPawn = game.getPawnByLocation(from);
+		//Simulate movement
+		AbstractPawn buffer = game.getPawnByLocation(to);
+		game.movePawn(from, to);
+		boolean allowed = !game.check(movedPawn.getTeam()); //Check check condition
+		game.movePawn(to, from);
+		board[to.getRow()][to.getCol()] = buffer;
+		
+		return allowed;
+		} else {
+			return true;
+		}
+	}
+	public void add(Location from, Location to) {
+		if(allowedMovement(from, to)) {
+			locations = Location.addLocation(locations, to);
+		}
 	}
 	public Location[] build() {
 		return locations;

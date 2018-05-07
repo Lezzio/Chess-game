@@ -45,7 +45,7 @@ public class Location implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "[Location] col:" + col + " row:" + row;
+		return "[Location] row:" + row + " col:" + col;
 	}
 	public static boolean locationArrayContains(Location[] array, Location location) {
 		boolean contained = false;
@@ -64,5 +64,16 @@ public class Location implements Serializable {
 		}
 		newLocations[locations.length] = location;
 		return newLocations;
+	}
+	public static Location[] concat(Location[] array1, Location[] array2) {
+		int a = 0;
+		Location[] merged = new Location[array1.length + array2.length];
+		for(int i = 0; i < array1.length; i++) {
+			merged[a++] = array1[i];
+		}
+		for(int i = 0; i < array2.length; i++) {
+			merged[a++] = array2[i];
+		}
+		return merged;
 	}
 }

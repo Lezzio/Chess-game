@@ -1,5 +1,6 @@
 package fr.insalyon.chess.core.pawns;
 
+import fr.insalyon.chess.Game;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.MovementBuilder;
@@ -21,8 +22,8 @@ public class Queen extends AbstractPawn {
 	}
 	
 	@Override
-	public Location[] getMovement(AbstractPawn[][] board, Location location) {
-		MovementBuilder movementBuilder = new MovementBuilder(board);
+	public Location[] getMovement(Game game, Location location, boolean check) {
+		MovementBuilder movementBuilder = new MovementBuilder(game, check);
 		movementBuilder.setCollide(true);
 		movementBuilder.setTeam(this.team);
 		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(0, location.getCol())); //TOP
@@ -30,10 +31,10 @@ public class Queen extends AbstractPawn {
 		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(location.getRow(), 0)); //LEFT
 		movementBuilder.add(MovementType.LINE_OR_DIAGONAL, location, new Location(location.getRow(), 7)); //RIGHT
 
-		int upperRow = location.getRow();
-		int lowerRow = 7 - location.getRow();
-		int rightCol = 7 - location.getCol();
-		int leftCol = location.getCol();
+		final int upperRow = location.getRow();
+		final int lowerRow = 7 - location.getRow();
+		final int rightCol = 7 - location.getCol();
+		final int leftCol = location.getCol();
 		
 		//Upper right diagonal
 		Location upperRightDiagonal = upperRow >= rightCol ? location.add(-rightCol, rightCol) : location.add(-upperRow, upperRow);

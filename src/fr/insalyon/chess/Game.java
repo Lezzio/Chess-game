@@ -3,6 +3,7 @@ package fr.insalyon.chess;
 import java.util.Arrays;
 
 import fr.insalyon.chess.core.AbstractPawn;
+import fr.insalyon.chess.core.End;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.Team;
 import fr.insalyon.chess.core.pawns.Bishop;
@@ -16,6 +17,8 @@ public class Game {
 	
 	private AbstractPawn[][] board;
 	private int currentPlayer = 0;
+	private King blackKing;
+	private King whiteKing;
 	
 	public Game() {
 		board = new AbstractPawn[8][8];
@@ -27,32 +30,34 @@ public class Game {
 	public void init() {
 		//Little pawns
 		for(int i = 0; i < 8; i++) {
-			board[1][i] = new LittlePawn(Team.Black, new Location(1, i));
+			board[1][i] = new LittlePawn(Team.BLACK, new Location(1, i));
 		}
 		for(int i = 0; i < 8; i++) {
-			board[6][i] = new LittlePawn(Team.White, new Location(6, i));
+			board[6][i] = new LittlePawn(Team.WHITE, new Location(6, i));
 		}
 		//Rooks
-		board[0][0] = new Rook(Team.Black, new Location(0, 0));
-		board[0][7] = new Rook(Team.Black, new Location(0, 7));
-		board[7][0] = new Rook(Team.White, new Location(7, 0));
-		board[7][7] = new Rook(Team.White, new Location(7, 7));
+		board[0][0] = new Rook(Team.BLACK, new Location(0, 0));
+		board[0][7] = new Rook(Team.BLACK, new Location(0, 7));
+		board[7][0] = new Rook(Team.WHITE, new Location(7, 0));
+		board[7][7] = new Rook(Team.WHITE, new Location(7, 7));
 		//Knights
-		board[0][1] = new Knight(Team.Black, new Location(0, 1));
-		board[0][6] = new Knight(Team.Black, new Location(0, 6));
-		board[7][1] = new Knight(Team.White, new Location(7, 1));
-		board[7][6] = new Knight(Team.White, new Location(7, 6));
+		board[0][1] = new Knight(Team.BLACK, new Location(0, 1));
+		board[0][6] = new Knight(Team.BLACK, new Location(0, 6));
+		board[7][1] = new Knight(Team.WHITE, new Location(7, 1));
+		board[7][6] = new Knight(Team.WHITE, new Location(7, 6));
 		//Bishops
-		board[0][2] = new Bishop(Team.Black, new Location(0, 2));
-		board[0][5] = new Bishop(Team.Black, new Location(0, 5));
-		board[7][2] = new Bishop(Team.White, new Location(7, 2));
-		board[7][5] = new Bishop(Team.White, new Location(7, 5));
+		board[0][2] = new Bishop(Team.BLACK, new Location(0, 2));
+		board[0][5] = new Bishop(Team.BLACK, new Location(0, 5));
+		board[7][2] = new Bishop(Team.WHITE, new Location(7, 2));
+		board[7][5] = new Bishop(Team.WHITE, new Location(7, 5));
 		//Queens
-		board[0][3] = new Queen(Team.Black, new Location(0, 3));
-		board[7][3] = new Queen(Team.White, new Location(7, 3));
+		board[0][3] = new Queen(Team.BLACK, new Location(0, 3));
+		board[7][3] = new Queen(Team.WHITE, new Location(7, 3));
 		//Kings
-		board[0][4] = new King(Team.Black, new Location(0, 4));
-		board[7][4] = new King(Team.White, new Location(7, 4));
+		blackKing = new King(Team.BLACK, new Location(0, 4));
+		board[0][4] = blackKing;
+		whiteKing = new King(Team.WHITE, new Location(7, 4));
+		board[7][4] = whiteKing;
 		
 	}
 	public Team getCurrentPlayer() {
@@ -81,13 +86,52 @@ public class Game {
 	}
 	
 	//The game is over
-	public boolean checkmate() {
-		return false;
+	public End gameOver(Team team) {
+
+		Location[] escapeMoves = new Location[0];
+
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				AbstractPawn pawn = board[i][j];
+				if(pawn != null && pawn.getTeam() == team) {
+					escapeMoves = Location.concat(escapeMoves, pawn.getMovement(this, pawn.getLocation(), true));
+				}
+			}
+		}
+
+		if(escapeMoves.length == 0) {
+			if(check(team)) {
+				return End.CHECKMATE;
+			} else {
+				return End.PAT;
+			}
+		}
+		return End.NONE;
 	}
 	
 	//The king is in threat
-	public boolean check() {
-		return false;
+	public boolean check(Team team) {
+		King king = null;
+		switch(team) {
+		case BLACK:
+			king = blackKing;
+			break;
+		case WHITE:
+			king = whiteKing;
+			break;
+		}
+		
+		Location[] targetedLocations = new Location[0];
+		//Find all targeted location by enemy team
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 8; j++) {
+				AbstractPawn pawn = board[i][j];
+				if(pawn != null && pawn.getTeam() != king.getTeam()) {
+					targetedLocations = Location.concat(targetedLocations, pawn.getMovement(this, pawn.getLocation(), false));
+				}
+			}
+		}
+		return Location.locationArrayContains(targetedLocations, king.getLocation());
 	}
 
 }

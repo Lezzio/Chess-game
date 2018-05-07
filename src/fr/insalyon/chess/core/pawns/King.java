@@ -1,5 +1,6 @@
 package fr.insalyon.chess.core.pawns;
 
+import fr.insalyon.chess.Game;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.MovementBuilder;
@@ -21,18 +22,18 @@ public class King extends AbstractPawn {
 	}
 	
 	@Override
-	public Location[] getMovement(AbstractPawn[][] board, Location location) {
-		MovementBuilder movementBuilder = new MovementBuilder(board);
+	public Location[] getMovement(Game game, Location location, boolean check) {
+		MovementBuilder movementBuilder = new MovementBuilder(game, check);
 		movementBuilder.setCollide(true);
 		movementBuilder.setTeam(this.team);
-		movementBuilder.add(MovementType.SINGLE, location.add(1, 0));
-		movementBuilder.add(MovementType.SINGLE, location.add(1, 1));
-		movementBuilder.add(MovementType.SINGLE, location.add(1, -1));
-		movementBuilder.add(MovementType.SINGLE, location.add(0, 1));
-		movementBuilder.add(MovementType.SINGLE, location.add(0, -1));
-		movementBuilder.add(MovementType.SINGLE, location.add(-1, 0));
-		movementBuilder.add(MovementType.SINGLE, location.add(-1, 1));
-		movementBuilder.add(MovementType.SINGLE, location.add(-1, -1));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(1, 0));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(1, 1));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(1, -1));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(0, 1));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(0, -1));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(-1, 0));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(-1, 1));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(-1, -1));
 		
 		return movementBuilder.build();
 	}

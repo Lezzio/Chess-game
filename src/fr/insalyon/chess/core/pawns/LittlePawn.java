@@ -22,37 +22,38 @@ public class LittlePawn extends AbstractPawn {
 	}
 	
 	@Override
-	public Location[] getMovement(AbstractPawn[][] board, Location location) {
+	public Location[] getMovement(Game game, Location location, boolean check) {
 		
-		MovementBuilder movementBuilder = new MovementBuilder(board);
+		final AbstractPawn[][] board = game.getBoard();
+		MovementBuilder movementBuilder = new MovementBuilder(game, check);
 		movementBuilder.setCollide(false);
 		movementBuilder.setTeam(this.team);
 		
 		int a = 0;
 		switch(this.team) {
-		case White:
+		case WHITE:
 			a = -1;
 			break;
-		case Black:
+		case BLACK:
 			a = 1;
 			break;
 		}
 		
 		//Location one cell ahead
-		movementBuilder.add(MovementType.SINGLE, location.add(a, 0));
+		movementBuilder.add(MovementType.SINGLE, location, location.add(a, 0));
 		//Location two cells ahead if initial position
 		if(location.getRow() == 6 || location.getRow() == 1) {
-			movementBuilder.add(MovementType.SINGLE, location.add(2 * a, 0));
+			movementBuilder.add(MovementType.SINGLE, location, location.add(2 * a, 0));
 		}
 		
 		//Diagonal movements if enemy pawn
 		Location wDiagonal1 = location.add(a, 1);
-		if(wDiagonal1.isInside(board) && !Game.isEmpty(board, wDiagonal1) && board[wDiagonal1.getRow()][wDiagonal1.getCol()].getTeam() != this.team) {
-			movementBuilder.add(wDiagonal1);
+		if(wDiagonal1.isInside(board) && !Game.isEmpty(board, wDiagonal1) && game.getPawnByLocation(wDiagonal1).getTeam() != this.team) {
+			movementBuilder.add(location, wDiagonal1);
 		}
 		Location wDiagonal2 = location.add(a, -1);
-		if(wDiagonal2.isInside(board) && !Game.isEmpty(board, wDiagonal2) && board[wDiagonal2.getRow()][wDiagonal2.getCol()].getTeam() != this.team) {
-			movementBuilder.add(wDiagonal2);
+		if(wDiagonal2.isInside(board) && !Game.isEmpty(board, wDiagonal2) && game.getPawnByLocation(wDiagonal2).getTeam() != this.team) {
+			movementBuilder.add(location, wDiagonal2);
 			
 		}
 		
