@@ -1,5 +1,7 @@
 package fr.insalyon.chess.gui;
 
+import fr.insalyon.chess.ai.ChessAI;
+import fr.insalyon.chess.ai.ChessAI2;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.End;
 import fr.insalyon.chess.core.Location;
@@ -32,20 +34,39 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 			gameApplication.getGame().movePawn(from, to);
 			gameApplication.getGame().rotatePlayer(); //Change player turn
 			event.setDropCompleted(true);
-			//We check both at the same time for particular types of pat
-			End endBlack = gameApplication.getGame().gameOver(Team.BLACK);
-			End endWhite = gameApplication.getGame().gameOver(Team.WHITE);
-			if(endBlack == End.PAT || endWhite == End.PAT) {
-				System.out.println("Egalité! PAT");
-			} else if (endBlack != End.NONE) {
-				System.out.println("Les blancs gagnent! : " + endBlack);
-			} else if(endWhite != End.NONE) {
-				System.out.println("Les noir gagnent! : " + endWhite);
+			if(!checkOver()) {
+			computerPlay(Team.BLACK);
 			}
+			checkOver();
 		} else {
 			event.setDropCompleted(false);
 		}
 		gameApplication.refresh(); //Draw again
+	}
+	
+	public boolean checkOver() {
+		//We check both at the same time for particular types of pat
+		End endBlack = gameApplication.getGame().gameOver(Team.BLACK);
+		End endWhite = gameApplication.getGame().gameOver(Team.WHITE);
+		if(endBlack == End.PAT || endWhite == End.PAT) {
+			System.out.println("Egalité! PAT");
+			return true;
+		} else if (endBlack != End.NONE) {
+			System.out.println("Les blancs gagnent! : " + endBlack);
+			return true;
+		} else if(endWhite != End.NONE) {
+			System.out.println("Les noir gagnent! : " + endWhite);
+			return true;
+		} 
+		return false;
+	}
+	ChessAI2 ai = new ChessAI2();
+	public void computerPlay(Team team) {
+		if(gameApplication.getGame().getCurrentPlayer() == team) {
+			ai.play(gameApplication.getGame(), team);
+			gameApplication.getGame().rotatePlayer();
+			gameApplication.refresh();
+		}
 	}
 
 }

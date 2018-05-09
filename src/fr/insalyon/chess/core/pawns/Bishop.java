@@ -12,13 +12,13 @@ public class Bishop extends AbstractPawn {
 	private final String NAME = "bishop";
 	
 	public Bishop(Team team) {
-		super.name = NAME;
-		super.team = team;
+		this(team, null);
 	}
 	public Bishop(Team team, Location location) {
 		super.name = NAME;
 		super.team = team;
 		super.location = location;
+		super.value = 3;
 	}
 	
 	@Override

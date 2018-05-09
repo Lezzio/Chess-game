@@ -7,6 +7,7 @@ public abstract class AbstractPawn {
 	protected Team team;
 	protected Location location;
 	protected String name;
+	protected int value;
 	
 	/**
 	 * Get the current location of the pawn
@@ -27,8 +28,17 @@ public abstract class AbstractPawn {
 	public String getName() {
 		return name;
 	}
+	/**
+	 * Get the team of the pawn
+	 */
 	public Team getTeam() {
 		return team;
+	}
+	/**
+	 * Get the value of the pawn
+	 */
+	public int getValue() {
+		return value;
 	}
 	/**
 	 * Get the locations to which the pawn can move from the given location

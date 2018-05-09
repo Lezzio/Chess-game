@@ -1,5 +1,6 @@
 package fr.insalyon.chess.gui;
 
+import fr.insalyon.chess.Game;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import javafx.event.EventHandler;
@@ -36,11 +37,15 @@ public class PawnDragEvent implements EventHandler<MouseEvent> {
 			// Show reachable cells
 			Location[] locs = pawn.getMovement(gameApplication.getGame(), pawn.getLocation(), true);
 			for (int i = 0; i < locs.length; i++) {
+				Location loc = locs[i];
 				Circle circle = new Circle(10);
-				circle.setFill(Color.GREEN);
+				if(Game.isEmpty(gameApplication.getGame().getBoard(), loc)) {
+					circle.setFill(Color.GREEN);
+				} else {
+					circle.setFill(Color.RED);
+				}
 				circle.setTranslateX(26.0);
 				circle.setDisable(true);
-				Location loc = locs[i];
 				if (loc == null) continue; // Avoid NullPointerException
 				gameApplication.getBoardGrid().add(circle, loc.getCol(), loc.getRow());
 			}

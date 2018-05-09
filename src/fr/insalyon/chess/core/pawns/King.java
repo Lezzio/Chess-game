@@ -19,6 +19,7 @@ public class King extends AbstractPawn {
 		super.name = NAME;
 		super.team = team;
 		super.location = location;
+		super.value = 1000;
 	}
 	
 	@Override

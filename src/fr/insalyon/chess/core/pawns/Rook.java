@@ -12,13 +12,13 @@ public class Rook extends AbstractPawn {
 	private final String NAME = "rook";
 	
 	public Rook(Team team) {
-		super.name = NAME;
-		super.team = team;
+		this(team, null);
 	}
 	public Rook(Team team, Location location) {
 		super.name = NAME;
 		super.team = team;
 		super.location = location;
+		super.value = 5;
 	}
 	
 	@Override

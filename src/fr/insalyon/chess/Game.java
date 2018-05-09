@@ -111,15 +111,7 @@ public class Game {
 	
 	//The king is in threat
 	public boolean check(Team team) {
-		King king = null;
-		switch(team) {
-		case BLACK:
-			king = blackKing;
-			break;
-		case WHITE:
-			king = whiteKing;
-			break;
-		}
+		King king = getKing(team);
 		
 		Location[] targetedLocations = new Location[0];
 		//Find all targeted location by enemy team
@@ -132,6 +124,18 @@ public class Game {
 			}
 		}
 		return Location.locationArrayContains(targetedLocations, king.getLocation());
+	}
+	public King getKing(Team team) {
+		King king = null;
+		switch(team) {
+		case BLACK:
+			king = blackKing;
+			break;
+		case WHITE:
+			king = whiteKing;
+			break;
+		}
+		return king;
 	}
 
 }
