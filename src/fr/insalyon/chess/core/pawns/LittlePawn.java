@@ -41,8 +41,8 @@ public class LittlePawn extends AbstractPawn {
 		
 		//Location one cell ahead
 		movementBuilder.add(MovementType.SINGLE, location, location.add(a, 0));
-		//Location two cells ahead if initial position
-		if(location.getRow() == 6 || location.getRow() == 1) {
+		//Location two cells ahead if initial position and no one ahead
+		if((location.getRow() == 6 || location.getRow() == 1) && Game.isEmpty(game.getBoard(), location.add(a, 0))) {
 			movementBuilder.add(MovementType.SINGLE, location, location.add(2 * a, 0));
 		}
 		

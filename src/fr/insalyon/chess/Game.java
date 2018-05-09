@@ -13,7 +13,7 @@ import fr.insalyon.chess.core.pawns.LittlePawn;
 import fr.insalyon.chess.core.pawns.Queen;
 import fr.insalyon.chess.core.pawns.Rook;
 
-public class Game {
+public class Game implements Cloneable {
 	
 	private AbstractPawn[][] board;
 	private int currentPlayer = 0;
@@ -138,4 +138,13 @@ public class Game {
 		return king;
 	}
 
+  	public Object clone() {
+    	Object clonedGame = null;
+    	try {
+    		clonedGame = super.clone();
+    	} catch(CloneNotSupportedException exception) {
+    		exception.printStackTrace();
+	    }
+	    return clonedGame;
+  	}
 }

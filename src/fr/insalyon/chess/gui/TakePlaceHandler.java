@@ -6,6 +6,8 @@ import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.End;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.Team;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
@@ -33,15 +35,24 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 		if(Location.locationArrayContains(selectedPawn.getMovement(gameApplication.getGame(), selectedPawn.getLocation(), true), to)) {
 			gameApplication.getGame().movePawn(from, to);
 			gameApplication.getGame().rotatePlayer(); //Change player turn
+			gameApplication.refresh();
 			event.setDropCompleted(true);
 			if(!checkOver()) {
-			computerPlay(Team.BLACK);
+				AsyncComputerPlay asyncComputerPlay = new AsyncComputerPlay(gameApplication);
+				asyncComputerPlay.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+				    @Override
+				    public void handle(WorkerStateEvent t) {
+				    	gameApplication.refresh();
+				    	gameApplication.getGame().rotatePlayer();
+				    }
+				});
+				Thread thread = new Thread(asyncComputerPlay);
+				thread.start();
 			}
-			checkOver();
 		} else {
+			gameApplication.refresh();
 			event.setDropCompleted(false);
 		}
-		gameApplication.refresh(); //Draw again
 	}
 	
 	public boolean checkOver() {
