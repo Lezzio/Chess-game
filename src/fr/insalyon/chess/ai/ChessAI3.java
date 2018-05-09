@@ -5,7 +5,7 @@ import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.Team;
 
-public class ChessAI2 {
+public class ChessAI3 {
 
 	private Location[] allTargetedLocations = new Location[0];
 	private int pieces = 0;
@@ -50,26 +50,24 @@ public class ChessAI2 {
 		
 		return value;
 	}
+
+	int cases = 0;
+	int b = 0;
 	
 	//Min max tree implementation
 	public void play(Game game, Team team) {
+		
+		long firstTime = System.currentTimeMillis();
 		
 		game = (Game) game.clone();
 		AbstractPawn[][] board = game.getBoard();
 
 		int initialValue = evalState(board, Team.BLACK);
-		int bestValue = -10000;
+		int bestValue = Integer.MIN_VALUE;
 		Location bestTo = null;
 		AbstractPawn bestPawn = null;
 		
-		setupVariables(game, team);
-		int depth = 3;
-		System.out.println(pieces);
-		if(enemyPieces <= 3) {
-			depth = 3;
-		} else if(enemyPieces == 1) {
-			depth = 4;
-		}
+		int depth = 5;
 		
 		System.out.println("INITIAL STATE " + initialValue);
 		
@@ -93,7 +91,7 @@ public class ChessAI2 {
 						game.rotatePlayer();
 //						System.out.println("Start min max for " + pawn.getName() + " to " + targetedLoc);
 						//Recursive tree
-						int value = max(game, game.getCurrentPlayer(), depth);
+						int value = miniMax(game, game.getCurrentPlayer(), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 //						System.out.println("MIN VALUE FOR STRIKE " + (a++) + " is " + value);
 						
 						//Is it the best one ?
@@ -112,20 +110,26 @@ public class ChessAI2 {
 			}
 		}
 		if(bestTo != null && bestPawn != null) {
-		System.out.println("Best move " + bestPawn.getName() + " to " + bestTo + " with score : " + bestValue);
+		System.out.println("Best move " + bestPawn.getName() + " to " + bestTo + " with score : " + bestValue + " and done " + cases + " cases ");
 		game.movePawn(bestPawn.getLocation(), bestTo);
+		System.out.println("Alpha beta triggered " + b);
+		long timeDif = System.currentTimeMillis() - firstTime;
+		System.out.println("Time taken = " + timeDif);
 		System.out.println("__________________________");
 		}
 	}
+	private int miniMax(Game game, Team team, int depth, int alpha, int beta, boolean maximize) {
 
-	private int min(Game game, Team team, int depth) {
-
-		int minValue = Integer.MAX_VALUE;
+		cases++;
+		
 		AbstractPawn[][] board = game.getBoard();
 
 		if(depth == 0) {
 			return evalState(board, Team.BLACK);
 		}
+		
+		int limitValue = maximize ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+		
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
 					AbstractPawn pawn = board[i][j];
@@ -144,64 +148,37 @@ public class ChessAI2 {
 						
 						game.rotatePlayer();
 						//Recursive tree
-						int value = max(game, game.getCurrentPlayer(), (depth - 1));
+						int value = miniMax(game, game.getCurrentPlayer(), (depth - 1), alpha, beta, !maximize);
 						
-						if(value <= minValue) {
-							minValue = value;
+						if(!maximize && value <= limitValue) {
+							limitValue = value;
+						} else if(maximize && value >= limitValue) {
+							limitValue = value;
 						}
-						
+
 						//Undo simulation
 						game.movePawn(targetedLoc, from);
 						board[targetedLoc.getRow()][targetedLoc.getCol()] = buffer;
 						game.rotatePlayer();
 						
-						
-				}
-			}
-		}
-		return minValue;
-	}
-
-	private int max(Game game, Team team, int depth) {
-
-		int maxValue = Integer.MIN_VALUE;
-		AbstractPawn[][] board = game.getBoard();
-
-		if(depth == 0) {
-			return evalState(board, Team.BLACK);
-		}
-		for(int i = 0; i < 8; i++) {
-			for(int j = 0; j < 8; j++) {
-					AbstractPawn pawn = board[i][j];
-					if(pawn == null) continue;
-					if(pawn.getTeam() != team) continue;
-					Location[] locs = pawn.getMovement(game, pawn.getLocation(), true);
-					if(locs.length == 0) continue;
-					//Iterate all possible moves
-					for(int k = 0; k < locs.length; k++) {
-						Location targetedLoc = locs[k];
-					
-						//Simulate movement
-						AbstractPawn buffer = game.getPawnByLocation(targetedLoc);
-						Location from = pawn.getLocation();
-						game.movePawn(from, targetedLoc);
-						
-						game.rotatePlayer();
-						//Recursive tree
-						int value = min(game, game.getCurrentPlayer(), (depth - 1));
-
-						if(value >= maxValue) {
-							maxValue = value;
+						//Update alpha and beta
+						if(maximize) {
+							alpha = Math.max(alpha, limitValue);
+						} else {
+							beta = Math.min(beta, limitValue);
+						}
+						if(beta <= alpha) {
+							b++;
+							return limitValue;
 						}
 						
-						//Undo simulation
-						game.movePawn(targetedLoc, from);
-						board[targetedLoc.getRow()][targetedLoc.getCol()] = buffer;
-						game.rotatePlayer();
+						
 				}
 			}
 		}
-		return maxValue;
+		
+		return limitValue;
+		
 	}
 
 }

@@ -44,6 +44,7 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 				    public void handle(WorkerStateEvent t) {
 				    	gameApplication.refresh();
 				    	gameApplication.getGame().rotatePlayer();
+				    	checkOver();
 				    }
 				});
 				Thread thread = new Thread(asyncComputerPlay);

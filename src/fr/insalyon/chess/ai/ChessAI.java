@@ -157,19 +157,34 @@ public class ChessAI {
 		}
 
 		//If no optimal play, random one without going too deep and in danger zone
-		if(bestPawn == null && bestTo == null) {
-			while(bestPawn == null && bestTo == null) {
+
+		//Reset and find another strike for more aggressive play
+		while(bestPawn == null && bestTo == null) {
 			int randomNumber1 = (int) (8 * Math.random());
 			int randomNumber2 = (int) (8 * Math.random());
 			AbstractPawn randomPawn = board[randomNumber1][randomNumber2];
 			if(randomPawn != null && randomPawn.getTeam() == team) {
 				Location[] movs = randomPawn.getMovement(game, randomPawn.getLocation(), true);
-				if(movs.length > 0 && !Location.locationArrayContains(allTargetedLocations, movs[(int) (movs.length * Math.random())])) {
-					System.out.println("Not targeted RANDOM zone");
-					bestTo = movs[0];
-					bestPawn = randomPawn;
+
+				if(movs.length > 0) {
+					int randomMov = (int) (movs.length * Math.random());
+					//Simulate movement
+					AbstractPawn buffer = game.getPawnByLocation(movs[randomMov]);
+					Location from = randomPawn.getLocation();
+					game.movePawn(from, movs[randomMov]);
+					//Update targeted locations
+					setupVariables(game, team);
+					
+					//Safe move ? Then make it
+					if(!Location.locationArrayContains(allTargetedLocations, movs[randomMov])) {
+						bestTo = movs[randomMov];
+						bestPawn = randomPawn;
+					}
+					
+					//Undo simulation
+					game.movePawn(movs[randomMov], from);
+					board[movs[randomMov].getRow()][movs[randomMov].getCol()] = buffer;
 				}
-			 }
 			}
 		}
 		//Make the play

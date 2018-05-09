@@ -1,7 +1,10 @@
 package fr.insalyon.chess.gui;
 
 import fr.insalyon.chess.Game;
+import fr.insalyon.chess.ai.ChessAI2;
 import fr.insalyon.chess.core.AbstractPawn;
+import fr.insalyon.chess.core.End;
+import fr.insalyon.chess.core.Team;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -40,6 +43,12 @@ public class GameApplication extends Application {
 		primaryStage.setScene(boardScene);
 		primaryStage.show();
 		// primaryStage.setResizable(false); doesn't work, make the whole board shift
+		ChessAI2 ai = new ChessAI2();
+		for(int i = 0; i < 0; i++) {
+			ai.play(game, game.getCurrentPlayer());
+			game.rotatePlayer();
+		}
+		refresh();
 	}
 
 	public void refresh() {
