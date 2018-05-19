@@ -8,18 +8,15 @@ import fr.insalyon.chess.core.Team;
 public class ChessAI3 {
 
 	private Location[] allTargetedLocations = new Location[0];
-	private int pieces = 0;
 	private int enemyPieces = 0;
 	
 	
 	private void setupVariables(Game game, Team team) {
-		pieces = 0;
 		enemyPieces = 0;
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
 				AbstractPawn pawn = game.getBoard()[i][j];
 				if(pawn == null) continue;
-				pieces++;
 				if(pawn.getTeam() != team) {
 					Location[] targets = pawn.getMovement(game, pawn.getLocation(), true);
 					allTargetedLocations = Location.concat(allTargetedLocations, targets);
@@ -32,7 +29,10 @@ public class ChessAI3 {
 	/*
 	 * Return an integer giving a perspective of the current board for a given team
 	 */
-	public int evalState(AbstractPawn[][] board, Team team) {
+	public int evalState(Game game, Team team) {
+		
+		AbstractPawn[][] board = game.getBoard();
+		
 		int value = 0;
 
 		for(int i = 0; i < 8; i++) {
@@ -62,12 +62,17 @@ public class ChessAI3 {
 		game = (Game) game.clone();
 		AbstractPawn[][] board = game.getBoard();
 
-		int initialValue = evalState(board, Team.BLACK);
+		int initialValue = evalState(game, Team.BLACK);
 		int bestValue = Integer.MIN_VALUE;
 		Location bestTo = null;
 		AbstractPawn bestPawn = null;
 		
-		int depth = 5;
+		int depth = 4;
+		
+		setupVariables(game, team);
+		if(enemyPieces == 1) {
+			depth = 5;
+		}
 		
 		System.out.println("INITIAL STATE " + initialValue);
 		
@@ -125,7 +130,7 @@ public class ChessAI3 {
 		AbstractPawn[][] board = game.getBoard();
 
 		if(depth == 0) {
-			return evalState(board, Team.BLACK);
+			return evalState(game, Team.BLACK);
 		}
 		
 		int limitValue = maximize ? Integer.MIN_VALUE : Integer.MAX_VALUE;

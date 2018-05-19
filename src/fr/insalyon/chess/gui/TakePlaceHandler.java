@@ -38,12 +38,14 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 			gameApplication.refresh();
 			event.setDropCompleted(true);
 			if(!checkOver()) {
+		    	gameApplication.setComputerTurn(true);
 				AsyncComputerPlay asyncComputerPlay = new AsyncComputerPlay(gameApplication);
 				asyncComputerPlay.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 				    @Override
 				    public void handle(WorkerStateEvent t) {
 				    	gameApplication.refresh();
 				    	gameApplication.getGame().rotatePlayer();
+				    	gameApplication.setComputerTurn(false);
 				    	checkOver();
 				    }
 				});

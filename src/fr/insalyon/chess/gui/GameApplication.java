@@ -2,6 +2,7 @@ package fr.insalyon.chess.gui;
 
 import fr.insalyon.chess.Game;
 import fr.insalyon.chess.ai.ChessAI2;
+import fr.insalyon.chess.ai.ChessAI3;
 import fr.insalyon.chess.core.AbstractPawn;
 import fr.insalyon.chess.core.End;
 import fr.insalyon.chess.core.Team;
@@ -25,6 +26,7 @@ public class GameApplication extends Application {
 	private Game game;
 	private Scene boardScene;
 	private GridPane boardGrid;
+	private boolean computerTurn = false;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -43,11 +45,6 @@ public class GameApplication extends Application {
 		primaryStage.setScene(boardScene);
 		primaryStage.show();
 		// primaryStage.setResizable(false); doesn't work, make the whole board shift
-		ChessAI2 ai = new ChessAI2();
-		for(int i = 0; i < 0; i++) {
-			ai.play(game, game.getCurrentPlayer());
-			game.rotatePlayer();
-		}
 		refresh();
 	}
 
@@ -118,5 +115,12 @@ public class GameApplication extends Application {
 
 	public GridPane getBoardGrid() {
 		return boardGrid;
+	}
+
+	public boolean isComputerTurn() {
+		return computerTurn;
+	}
+	public void setComputerTurn(boolean computerTurn) {
+		this.computerTurn = computerTurn;
 	}
 }

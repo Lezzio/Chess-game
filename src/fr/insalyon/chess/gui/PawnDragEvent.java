@@ -27,7 +27,7 @@ public class PawnDragEvent implements EventHandler<MouseEvent> {
 	@Override
 	public void handle(MouseEvent event) {
 		// Check player turn
-		if (pawn.getTeam() == gameApplication.getGame().getCurrentPlayer()) {
+		if (pawn.getTeam() == gameApplication.getGame().getCurrentPlayer() && !gameApplication.isComputerTurn()) {
 			Dragboard db = imageView.startDragAndDrop(TransferMode.MOVE);
 			db.setDragView(imageView.getImage());
 			ClipboardContent content = new ClipboardContent();
