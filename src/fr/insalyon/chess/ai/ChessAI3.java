@@ -6,25 +6,6 @@ import fr.insalyon.chess.core.Location;
 import fr.insalyon.chess.core.Team;
 
 public class ChessAI3 {
-
-	private Location[] allTargetedLocations = new Location[0];
-	private int enemyPieces = 0;
-	
-	
-	private void setupVariables(Game game, Team team) {
-		enemyPieces = 0;
-		for(int i = 0; i < 8; i++) {
-			for(int j = 0; j < 8; j++) {
-				AbstractPawn pawn = game.getBoard()[i][j];
-				if(pawn == null) continue;
-				if(pawn.getTeam() != team) {
-					Location[] targets = pawn.getMovement(game, pawn.getLocation(), true);
-					allTargetedLocations = Location.concat(allTargetedLocations, targets);
-					enemyPieces++;
-				}
-			}
-		}
-	}
 	
 	/*
 	 * Return an integer giving a perspective of the current board for a given team
@@ -59,7 +40,6 @@ public class ChessAI3 {
 		
 		long firstTime = System.currentTimeMillis();
 		
-		game = (Game) game.clone();
 		AbstractPawn[][] board = game.getBoard();
 
 		int initialValue = evalState(game, Team.BLACK);
@@ -67,14 +47,9 @@ public class ChessAI3 {
 		Location bestTo = null;
 		AbstractPawn bestPawn = null;
 		
-		int depth = 4;
+		int depth = 3;
 		
-		setupVariables(game, team);
-		if(enemyPieces == 1) {
-			depth = 5;
-		}
-		
-		System.out.println("INITIAL STATE " + initialValue);
+		System.out.println("INITIAL SCORE " + initialValue);
 		
 		int a = 0;
 		for(int i = 0; i < 8; i++) {
@@ -94,10 +69,8 @@ public class ChessAI3 {
 						game.movePawn(from, targetedLoc);
 
 						game.rotatePlayer();
-//						System.out.println("Start min max for " + pawn.getName() + " to " + targetedLoc);
 						//Recursive tree
 						int value = miniMax(game, game.getCurrentPlayer(), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
-//						System.out.println("MIN VALUE FOR STRIKE " + (a++) + " is " + value);
 						
 						//Is it the best one ?
 						if(value >= bestValue) {
@@ -119,7 +92,7 @@ public class ChessAI3 {
 		game.movePawn(bestPawn.getLocation(), bestTo);
 		System.out.println("Alpha beta triggered " + b);
 		long timeDif = System.currentTimeMillis() - firstTime;
-		System.out.println("Time taken = " + timeDif);
+		System.out.println("Time taken = " + timeDif + "ms");
 		System.out.println("__________________________");
 		}
 	}

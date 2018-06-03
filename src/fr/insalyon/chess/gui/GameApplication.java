@@ -32,10 +32,11 @@ public class GameApplication extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Jeu d'échecs");
 
-		// Chess board
+		// Generate the game object
 		this.game = new Game();
 		game.init();
 
+		// Draw the chess board
 		this.boardGrid = new GridPane();
 		this.boardScene = new Scene(boardGrid, WIDTH, HEIGHT);
 
@@ -91,7 +92,7 @@ public class GameApplication extends Application {
 
 	private ImageView createPawnNode(AbstractPawn pawn) {
 		// Retrieve the proper pawn image
-		Image image = new Image(pawn.getTeam().getName() + "_" + pawn.getName() + ".png");
+		Image image = new Image("resources/" + pawn.getTeam().getName() + "_" + pawn.getName() + ".png");
 		ImageView pieceImage = new ImageView(image);
 
 		// Define drag and drop event

@@ -55,6 +55,7 @@ public class MovementBuilder {
 				row += rowInc;
 				col += colInc;
 				Location newLocation = new Location(row, col);
+				//Check collision and if allowed or not ? (for little pawn purpose)
 				if(collide) {
 					noCollision = Game.isEmpty(board, newLocation);
 				}

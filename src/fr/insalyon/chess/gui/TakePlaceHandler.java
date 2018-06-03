@@ -38,6 +38,7 @@ public class TakePlaceHandler implements EventHandler<DragEvent> {
 			gameApplication.refresh();
 			event.setDropCompleted(true);
 			if(!checkOver()) {
+				//Launch the AI turn in async
 		    	gameApplication.setComputerTurn(true);
 				AsyncComputerPlay asyncComputerPlay = new AsyncComputerPlay(gameApplication);
 				asyncComputerPlay.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

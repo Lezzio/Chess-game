@@ -7,7 +7,14 @@ import fr.insalyon.chess.core.Team;
 import fr.insalyon.chess.core.pawns.King;
 
 public class ChessAI {
+
 	
+	/*
+	 * ATTENTION
+	 * 
+	 * Ancienne version : regarder ChessAI3
+	 * 
+	 */
 
 	//Avoid suicide variables
 	private Location[] allTargetedLocations = new Location[0];

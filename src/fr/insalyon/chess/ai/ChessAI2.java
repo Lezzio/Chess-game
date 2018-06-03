@@ -11,6 +11,12 @@ public class ChessAI2 {
 	private int pieces = 0;
 	private int enemyPieces = 0;
 	
+	/*
+	 * ATTENTION
+	 * 
+	 * Ancienne version : regarder ChessAI3
+	 * 
+	 */
 	
 	private void setupVariables(Game game, Team team) {
 		pieces = 0;
@@ -54,7 +60,6 @@ public class ChessAI2 {
 	//Min max tree implementation
 	public void play(Game game, Team team) {
 		
-		game = (Game) game.clone();
 		AbstractPawn[][] board = game.getBoard();
 
 		int initialValue = evalState(board, Team.BLACK);

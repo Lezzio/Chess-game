@@ -13,7 +13,7 @@ import fr.insalyon.chess.core.pawns.LittlePawn;
 import fr.insalyon.chess.core.pawns.Queen;
 import fr.insalyon.chess.core.pawns.Rook;
 
-public class Game implements Cloneable {
+public class Game {
 	
 	private AbstractPawn[][] board;
 	private int currentPlayer = 0;
@@ -85,11 +85,16 @@ public class Game implements Cloneable {
 		System.out.println(Arrays.deepToString(board));
 	}
 	
-	//The game is over
+	/**
+	 * Game ending state for a team
+	 * @param team
+	 * @return
+	 */
 	public End gameOver(Team team) {
 
 		Location[] escapeMoves = new Location[0];
 
+		//Possible escape moves for the king
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 8; j++) {
 				AbstractPawn pawn = board[i][j];
@@ -108,8 +113,11 @@ public class Game implements Cloneable {
 		}
 		return End.NONE;
 	}
-	
-	//The king is in threat
+	/**
+	 * The king is in threat ?
+	 * @param team
+	 * @return
+	 */
 	public boolean check(Team team) {
 		King king = getKing(team);
 		
@@ -137,14 +145,4 @@ public class Game implements Cloneable {
 		}
 		return king;
 	}
-
-  	public Object clone() {
-    	Object clonedGame = null;
-    	try {
-    		clonedGame = super.clone();
-    	} catch(CloneNotSupportedException exception) {
-    		exception.printStackTrace();
-	    }
-	    return clonedGame;
-  	}
 }
