@@ -44,8 +44,10 @@ public class ChessAI3 {
 
 		int initialValue = evalState(game, Team.BLACK);
 		int bestValue = Integer.MIN_VALUE;
-		Location bestTo = null;
-		AbstractPawn bestPawn = null;
+		//The size is wide enough to be able to store all equal possible moves (the max possible moves should be 218)
+		Location[] bestTos = new Location[512];
+		AbstractPawn[] bestPawns = new AbstractPawn[512];
+		int p = 0; //To current index of bestTo and bestPawn
 		
 		int depth = 3;
 		
@@ -73,10 +75,18 @@ public class ChessAI3 {
 						int value = miniMax(game, game.getCurrentPlayer(), depth, Integer.MIN_VALUE, Integer.MAX_VALUE, false);
 						
 						//Is it the best one ?
-						if(value >= bestValue) {
+						if(value > bestValue) {
 							bestValue = value;
-							bestTo = targetedLoc;
-							bestPawn = pawn;
+							//Reset bestTo and bestPawn
+							bestTos = new Location[512];
+							bestPawns = new AbstractPawn[512];
+							p = 0;
+
+							bestTos[p] = targetedLoc;
+							bestPawns[p++] = pawn;
+						} else if (value == bestValue) { //Just another good one ? Add it
+							bestTos[p] = targetedLoc;
+							bestPawns[p++] = pawn;
 						}
 						
 						//Undo simulation
@@ -87,6 +97,11 @@ public class ChessAI3 {
 				}
 			}
 		}
+		// Select random equal best moves to create opportunities and avoid repetitive playing.
+		int selectedPlay = (int) (Math.random() * p);
+		Location bestTo = bestTos[selectedPlay];
+		AbstractPawn bestPawn = bestPawns[selectedPlay];
+		
 		if(bestTo != null && bestPawn != null) {
 		System.out.println("Best move " + bestPawn.getName() + " to " + bestTo + " with score : " + bestValue + " and done " + cases + " cases ");
 		game.movePawn(bestPawn.getLocation(), bestTo);
